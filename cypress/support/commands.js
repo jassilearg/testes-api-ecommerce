@@ -1,15 +1,15 @@
 const faker = require('faker-br');
 const BASE_URL = Cypress.env('API_URL');
 
-const nome = faker.name.firstName();
-const sobrenome = faker.name.lastName();
-const nomeCompleto = `${nome} ${sobrenome}`;
-const email = faker.internet.email(nome, sobrenome);
-const endereco = faker.address.streetAddress();
-const telefone = faker.phone.phoneNumber();
-const senha = 'Senha@2025';
-
 Cypress.Commands.add('cadastrarUsuario', () => {
+    const nome = faker.name.firstName();
+    const sobrenome = faker.name.lastName();
+    const nomeCompleto = `${nome} ${sobrenome}`;
+    const email = faker.internet.email(nome, sobrenome);
+    const endereco = faker.address.streetAddress();
+    const telefone = faker.phone.phoneNumber();
+    const senha = 'Senha@2025';
+
     cy.request({
         method: 'POST',
         url: `${BASE_URL}/auth/signUp`,
@@ -24,7 +24,26 @@ Cypress.Commands.add('cadastrarUsuario', () => {
     }).then((response) => {
         cy.log('Status: ' + response.status);
         cy.log('Body: ' + JSON.stringify(response.body));
-        
+
         expect(response.status).to.equal(201);
+        expect(response.body).to.have.property('accessToken');
+    });
+});
+
+Cypress.Commands.add('logarUsuario', () => {
+    cy.request({
+        method: 'POST',
+        url: `${BASE_URL}/auth/signIn`,
+        body:{
+            email: "testes@testes.com",
+            password: "Testes@2025"
+        }
+    }).then((response) => {
+        cy.log('Status: ' + response.status);
+        cy.log('Body: ' + JSON.stringify(response.body));
+
+        expect(response.status).to.eq(201);
+        expect(response.body).to.have.property('accessToken');
+
     });
 });
