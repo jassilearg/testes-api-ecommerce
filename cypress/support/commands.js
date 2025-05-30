@@ -47,3 +47,21 @@ Cypress.Commands.add('logarUsuario', () => {
 
     });
 });
+
+Cypress.Commands.add('impedirLogin', () => {
+    cy.request({
+        method: 'POST',
+        url: `${BASE_URL}/auth/signIn`,
+        failOnStatusCode: false,
+        body:{
+            email: "email@incorreto.com",
+            password: "SenhaIncorreta@2025"
+        }
+    }).then((response) => {
+        cy.log('Status: ' + response.status);
+        cy.log('Body: ' + JSON.stringify(response.body));
+
+        expect(response.status).to.eq(401);
+        expect(response.body.message).to.eq("Invalid Credentials");
+    });
+});
