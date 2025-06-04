@@ -48,8 +48,8 @@ Com tudo pronto, execute os testes usando o navegador Chrome:
 npx cypress run --browser chrome
 ```
 
-> 🖥️ O Cypress será executado em modo headless no Chrome.
-
+> 🖥️ O Cypress será executado em modo headless no Chrome.  
+> ⚠️ Certifique-se que a API está sendo executada antes de executar esse comando.
 ---
 
 ## 🖱️ 5. (Opcional) Executar via Interface Gráfica
