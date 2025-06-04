@@ -4,7 +4,8 @@ const BASE_URL = Cypress.env('API_URL');
 Cypress.Commands.add('cadastrarUsuario', () => {
     const nome = faker.name.firstName();
     const sobrenome = faker.name.lastName();
-    const nomeCompleto = `${nome} ${sobrenome}`;
+    const nomeDoMeio = faker.name.lastName();
+    const nomeCompleto = `${nome} ${nomeDoMeio} ${sobrenome}`;
     const email = faker.internet.email(nome, sobrenome);
     const endereco = faker.address.streetAddress();
     const telefone = faker.phone.phoneNumber();
@@ -27,6 +28,27 @@ Cypress.Commands.add('cadastrarUsuario', () => {
 
         expect(response.status).to.equal(201);
         expect(response.body).to.have.property('accessToken');
+    });
+});
+
+Cypress.Commands.add('cadastrarUsuarioCamposVazios', () => {
+    cy.request({
+        method: 'POST',
+        url: `${BASE_URL}/auth/signUp`,
+        body: {
+            name: "",
+            fullname: "",
+            email: "",
+            address: "",
+            contact: "",
+            password: ""
+        }
+    }).then((response) => {
+        cy.log('Status: ' + response.status);
+        cy.log('Body: ' + JSON.stringify(response.body));
+
+        expect(response.status).to.equal(400);
+        expect(response.body.error).to.eq('Bad Request');
     });
 });
 
