@@ -11,7 +11,7 @@ describe('autenticação', () => {
     cy.cadastrarUsuarioCamposVazios();
   });
 
-  it('não deve permitir o login do usuário ao inserir dados incorretos', () => {
-    cy.impedirLogin();
+  it('não deve permitir o login de usuário não cadastrado', () => {
+    cy.loginUsuarioDadosNaoCadastrados();
   });
 });

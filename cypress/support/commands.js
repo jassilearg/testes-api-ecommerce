@@ -70,7 +70,7 @@ Cypress.Commands.add('logarUsuario', () => {
     });
 });
 
-Cypress.Commands.add('impedirLogin', () => {
+Cypress.Commands.add('loginUsuarioDadosNaoCadastrados', () => {
     cy.request({
         method: 'POST',
         url: `${BASE_URL}/auth/signIn`,
