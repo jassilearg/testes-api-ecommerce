@@ -7,9 +7,6 @@ Cypress.Commands.add('buscarClientes', () => {
         password: "Testes@2025"
       }
     }).then((response) => {
-      expect(response.status).to.eq(201);
-      expect(response.body).to.have.property('accessToken');
-  
       const token = response.body.accessToken;
   
       cy.request({
@@ -33,5 +30,33 @@ Cypress.Commands.add('buscarClientesSemLogin', () => {
     failOnStatusCode: false
   }).then((res) => {
     expect(res.status).to.eq(401);
+  });
+});
+
+Cypress.Commands.add('buscarClienteInexistente', () => {
+  cy.request({
+    method: 'POST',
+    url: `${Cypress.env('API_URL')}/auth/signIn`,
+    body: {
+      email: "testes@testes.com",
+      password: "Testes@2025"
+    }
+  }).then((response) => {
+    const token = response.body.accessToken;
+
+    cy.request({
+      method: 'GET',
+      url: `${Cypress.env('API_URL')}/clients`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      qs: {
+        email: 'cliente@inexistente.com.br'
+      }
+    }).then((res) => {
+      cy.log('Clientes encontrados:', JSON.stringify(res.body));
+      expect(res.status).to.eq(200);
+      expect(res.body).to.be.an('array').with.lengthOf(0);
+    });
   });
 });

@@ -6,4 +6,8 @@ describe('clientes', () => {
     it('não deve listar clientes sem login do usuario', () => {
         cy.buscarClientesSemLogin();
     });
+
+    it('não deve encontrar cliente inexistente', () => {
+        cy.buscarClienteInexistente();
+    });
 });
