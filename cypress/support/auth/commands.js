@@ -35,6 +35,7 @@ Cypress.Commands.add('cadastrarUsuarioCamposVazios', () => {
     cy.request({
         method: 'POST',
         url: `${BASE_URL}/auth/signUp`,
+        failOnStatusCode: false,
         body: {
             name: "",
             fullname: "",
