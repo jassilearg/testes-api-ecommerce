@@ -110,3 +110,41 @@ Cypress.Commands.add('criarProdutoComCamposVazios', () => {
     });
   });
 });
+
+Cypress.Commands.add('criarProdutoComTiposDeDadosIncorretos', () => {
+  cy.request({
+    method: 'POST',
+    url: `${Cypress.env('API_URL')}/auth/signIn`,
+    body: {
+      email: "admin@email.com",
+      password: "123456"
+    }
+  }).then((response) => {
+    const token = response.body.accessToken;
+
+    cy.request({
+      method: 'POST',
+      failOnStatusCode: false,
+      url: `${Cypress.env('API_URL')}/products`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: {
+        "name": 1,
+        "description": 1,
+        "price": "",
+        "stock": "",
+        "Tags": [
+          {
+            "label": 1,
+            "value": 1
+          }
+        ]
+      }
+    }).then((res) => {
+      cy.log('Mensagem de erro:', JSON.stringify(res.body.message));
+      expect(res.status).to.eq(400);
+      expect(res.body).to.have.property('error').to.eq("Bad Request");
+    });
+  });
+});

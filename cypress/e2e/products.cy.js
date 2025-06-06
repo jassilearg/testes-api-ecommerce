@@ -1,4 +1,4 @@
-describe('clientes', () => {
+describe('products', () => {
     it('deve permitir usuário administrador criar um produto', () => {
         cy.criarProduto();
     });
@@ -11,4 +11,7 @@ describe('clientes', () => {
         cy.criarProdutoComCamposVazios();
     });
 
+    it('não deve permitir criar um produto com campos com tipos de dados incorretos', () => {
+        cy.criarProdutoComTiposDeDadosIncorretos();
+    });
 });
