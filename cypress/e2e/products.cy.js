@@ -7,4 +7,8 @@ describe('clientes', () => {
         cy.criarProdutoSemPermissaoAdm();
     });
 
+    it('não deve permitir criar um produto com campos vazios', () => {
+        cy.criarProdutoComCamposVazios();
+    });
+
 });

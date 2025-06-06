@@ -66,9 +66,47 @@ Cypress.Commands.add('criarProdutoSemPermissaoAdm', () => {
         ]
       }
     }).then((res) => {
-      cy.log('Produto criado:', JSON.stringify(res.body));
+      cy.log('Mensagem de erro:', JSON.stringify(res.body.message));
       expect(res.status).to.eq(403);
       expect(res.body).to.have.property('error').to.eq("Forbidden");
+    });
+  });
+});
+
+Cypress.Commands.add('criarProdutoComCamposVazios', () => {
+  cy.request({
+    method: 'POST',
+    url: `${Cypress.env('API_URL')}/auth/signIn`,
+    body: {
+      email: "admin@email.com",
+      password: "123456"
+    }
+  }).then((response) => {
+    const token = response.body.accessToken;
+
+    cy.request({
+      method: 'POST',
+      failOnStatusCode: false,
+      url: `${Cypress.env('API_URL')}/products`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: {
+        "name": "",
+        "description": "",
+        "price": 0,
+        "stock": 0,
+        "Tags": [
+          {
+            "label": "",
+            "value": ""
+          }
+        ]
+      }
+    }).then((res) => {
+      cy.log('Mensagem de erro:', JSON.stringify(res.body.message));
+      expect(res.status).to.eq(400);
+      expect(res.body).to.have.property('error').to.eq("Bad Request");
     });
   });
 });
