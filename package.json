@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "merge:reports": "node cypress/reports/mergeAndCleanJsons",
-    "generate:xls": "node cypress/reports/generate-xls",
-    "generate:new:xls": "node cypress/reports/generateXls"
+    "generate:xls": "node cypress/reports/generateXls"
   },
   "keywords": [],
   "author": "",
