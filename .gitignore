@@ -1,1 +1,22 @@
-node_modules
+# Node modules
+node_modules/
+
+# Cypress generated screenshots and videos
+cypress/screenshots/
+cypress/videos/
+
+# Cypress cache
+.cypress_cache/
+
+# Editor/IDE
+.vscode/
+.idea/
+*.sw?
+
+# Script Related
+cypress/reports/jsons
+cypress/reports/merged-json
+cypress/reports/xls
+
+# Not default .locks
+yarn.lock
