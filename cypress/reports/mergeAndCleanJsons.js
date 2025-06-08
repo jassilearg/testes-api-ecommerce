@@ -14,7 +14,13 @@ const jsonDir = path.join(__dirname, "jsons")
     }
 
     const report = await marge.merge({ files })
-    const outputPath = path.join(__dirname, "merged-json", "mochawesome.json")
+    const outputDir = path.join(__dirname, "merged-json")
+
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir)
+    }
+
+    const outputPath = path.join(outputDir, "mochawesome.json")
     fs.writeFileSync(outputPath, JSON.stringify(report, null, 2))
     console.log(`✅ Merge criado com sucesso: ${outputPath}`)
 
