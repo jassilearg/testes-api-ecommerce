@@ -27,7 +27,6 @@ Cypress.Commands.add('criarOrdemDadosValidos', () => {
   });
 });
 
-
 Cypress.Commands.add('criarOrdemIdInvalido', () => {
   cy.request({
     method: 'POST',
@@ -58,7 +57,6 @@ Cypress.Commands.add('criarOrdemIdInvalido', () => {
   });
 });
 
-
 Cypress.Commands.add('criarOrdemComTiposDeDadosIncorretos', () => {
   cy.request({
     method: 'POST',
@@ -80,6 +78,36 @@ Cypress.Commands.add('criarOrdemComTiposDeDadosIncorretos', () => {
       body: {
         "productId": 0,
         "quantity": "teste"
+      }
+    }).then((res) => {
+      cy.log('Mensagem de erro:', JSON.stringify(res.body.message));
+      expect(res.status).to.eq(400);
+      expect(res.body).to.have.property('error').to.eq("Bad Request");
+    });
+  });
+});
+
+Cypress.Commands.add('criarOrdemComCamposVazios', () => {
+  cy.request({
+    method: 'POST',
+    url: `${Cypress.env('API_URL')}/auth/signIn`,
+    body: {
+      email: "admin@email.com",
+      password: "123456"
+    }
+  }).then((response) => {
+    const token = response.body.accessToken;
+
+    cy.request({
+      method: 'POST',
+      failOnStatusCode: false,
+      url: `${Cypress.env('API_URL')}/orders`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: {
+        "productId": "",
+        "quantity": ""
       }
     }).then((res) => {
       cy.log('Mensagem de erro:', JSON.stringify(res.body.message));

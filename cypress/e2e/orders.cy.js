@@ -10,4 +10,9 @@ describe('orders', () => {
     it('não deve permitir criar uma ordem com campos com tipos de dados incorretos', () => {
         cy.criarProdutoComTiposDeDadosIncorretos();
     });
+
+    it('não deve permitir criar uma ordem com campos vazios', () => {
+        cy.criarOrdemComCamposVazios();
+    });
+
 });
