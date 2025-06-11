@@ -1,3 +1,33 @@
+Cypress.Commands.add('criarOrdemDadosValidos', () => {
+  cy.request({
+    method: 'POST',
+    url: `${Cypress.env('API_URL')}/auth/signIn`,
+    body: {
+      email: "admin@email.com",
+      password: "123456"
+    }
+  }).then((response) => {
+    const token = response.body.accessToken;
+
+    cy.request({
+      method: 'POST',
+      url: `${Cypress.env('API_URL')}/orders`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: {
+        "productId": "0197428c-6134-775e-bc8f-ba4506bc7d5f",
+        "quantity": 2
+      }
+    }).then((res) => {
+      cy.log('Produto criado:', JSON.stringify(res.body));
+      expect(res.status).to.eq(201);
+      expect(res.body).to.have.property('id');
+    });
+  });
+});
+
+
 Cypress.Commands.add('criarOrdemIdInvalido', () => {
   cy.request({
     method: 'POST',
